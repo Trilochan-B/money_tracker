@@ -1,10 +1,4 @@
-### A complete deployment project using docker and docker compose
-### docker network and voulme are used in this project
-### This a webapplication for keeping record of your earnings and expenesses
+A simplel Expense and Earnings Tracker web application built with Python Flask, containerized with Docker, and served using Nginx as a reverse proxy.
+This app allows users to log their income and expenses, visualize financial data, and stay on top of their budget — all through a clean web interface
 
-### use the command to run the application
-<<<<<<< HEAD
-## docker compose up
-=======
-## ---- docker compose up
->>>>>>> fa7785fba00687461a45df42e31f89108bb0cd86
+## CMD - docker compose up --build -d.
