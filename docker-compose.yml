@@ -1,0 +1,58 @@
+services:
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    networks:
+      - money_track
+    restart: always
+  mysql:
+    container_name: mysql
+    image: mysql:oraclelinux9
+    ports:
+      - "3306:3306"
+    
+    volumes:
+      - mysql_money_tracker:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: money_tracker
+    networks:
+      - money_track
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin","ping","-h","localhost","-uroot","-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+  flask:
+    build:
+      context: .
+    container_name: flask_cont
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+    networks:
+      - money_track
+    
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DB: money_tracker
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL","curl -f http;//localhost:5000/helth || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+networks:
+  money_track:
+volumes:
+  mysql_money_tracker:
